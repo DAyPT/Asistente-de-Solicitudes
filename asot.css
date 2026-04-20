@@ -82,7 +82,7 @@ body {
 
 .content {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 260px 1fr;
     min-height: 600px;
     gap: 0;
 }
@@ -96,7 +96,7 @@ body {
 }
 
 .main {
-    padding: 30px;
+    padding: 0;
     overflow-y: auto;
     max-height: calc(100vh - 200px);
 }
@@ -287,11 +287,16 @@ body {
 }
 
 .servicios-list {
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+    padding: 25px;
+    align-content: start;
 }
 
 .servicios-vacio {
-    padding: 16px;
+    grid-column: 1 / -1;
+    padding: 40px;
     color: #666;
     font-size: 0.9em;
     text-align: center;
@@ -299,31 +304,52 @@ body {
 }
 
 .servicio-item {
-    padding: 10px;
-    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 12px;
     background: white;
-    border: 1px solid #e8ecf1;
-    border-radius: 0;
+    border: 2px solid #e8ecf1;
     cursor: pointer;
-    font-size: 0.9em;
-    transition: all 0.3s;
-    font-weight: 500;
+    text-align: center;
+    gap: 10px;
+    transition: all 0.25s;
+    min-height: 110px;
+    width: 100%;
 }
 
 .servicio-item:hover {
-    background: #fff3e0;
     border-color: #ff9500;
-}
-
-.servicio-item.active {
-    background: #0d3b5c;
-    color: white;
-    border-color: #0d3b5c;
+    background: #fff8f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.15);
 }
 
 .servicio-item.recomendado {
-    border: 2px solid #ff9500;
-    background: #fff8e8;
+    border-color: #ff9500;
+    background: #fff8f0;
+}
+
+.tile-icon {
+    font-size: 2em;
+    line-height: 1;
+    position: relative;
+    display: block;
+}
+
+.tile-star {
+    font-size: 0.45em;
+    position: absolute;
+    top: -4px;
+    right: -10px;
+}
+
+.tile-name {
+    font-size: 0.78em;
+    font-weight: 600;
+    color: #0d3b5c;
+    line-height: 1.3;
 }
 
 .detail-panel {
@@ -332,7 +358,25 @@ body {
 
 .detail-panel.active {
     display: block;
+    padding: 30px;
     animation: fadeIn 0.3s;
+}
+
+.btn-volver {
+    background: none;
+    border: none;
+    color: #ff9500;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 0 12px 0;
+    display: block;
+    font-family: inherit;
+    transition: opacity 0.2s;
+}
+
+.btn-volver:hover {
+    opacity: 0.7;
 }
 
 @keyframes fadeIn {
@@ -681,7 +725,8 @@ body {
 .servicio-item:focus-visible,
 .servicio-recomendado:focus-visible,
 .close:focus-visible,
-.dato-checkbox:focus-visible {
+.dato-checkbox:focus-visible,
+.btn-volver:focus-visible {
     outline: 3px solid #ff9500;
     outline-offset: 2px;
 }
@@ -689,13 +734,6 @@ body {
 .servicio-item,
 .servicio-recomendado {
     font-family: inherit;
-}
-
-button.servicio-item,
-button.servicio-recomendado {
-    display: block;
-    width: 100%;
-    text-align: left;
 }
 
 @media (prefers-reduced-motion: reduce) {
