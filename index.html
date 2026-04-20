@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASOT | Asistente de Solicitudes a Organismos Terceros</title>
+    <title>Asistente de Solicitudes</title>
     <link rel="stylesheet" href="asot.css">
 </head>
 <body>
@@ -11,8 +11,7 @@
     <div class="container">
         <header class="header">
             <div class="header-content">
-                <h1>📋 ASOT</h1>
-                <p>Asistente de Solicitudes a Organismos Terceros</p>
+                <h1>📋 Asistente de Solicitudes</h1>
             </div>
         </header>
 
@@ -74,17 +73,14 @@
                     <button type="button" class="category-btn" data-category="registros" aria-pressed="false">Registros</button>
                 </div>
 
-                <div class="servicios-list" id="serviciosList" role="group" aria-label="Servicios disponibles"></div>
             </aside>
 
             <main class="main" id="main-content" tabindex="-1">
-                <div id="emptyState" class="empty-state" role="status">
-                    <div class="empty-state-icon" aria-hidden="true">🔍</div>
-                    <p>Selecciona un servicio para ver detalles</p>
-                </div>
+                <div class="servicios-list" id="serviciosList" role="group" aria-label="Servicios disponibles"></div>
 
                 <div id="detailPanel" class="detail-panel">
                     <div class="detail-header">
+                        <button type="button" class="btn-volver" id="btnVolver">← Volver</button>
                         <h2 id="servicioNombre" tabindex="-1"></h2>
                         <span class="detail-category" id="servicioCategoria"></span>
                     </div>
@@ -186,6 +182,15 @@
     <script>
         const { datosAInformacion, informacionAServicios, servicios } = window.ASOT_DATA;
 
+        const CATEGORY_ICONS = {
+            telecomunicaciones: '📞',
+            isp: '🌐',
+            plataformas: '📱',
+            transporte: '🚗',
+            financiero: '🏦',
+            registros: '📋'
+        };
+
         let estado = {
             servicioActual: null,
             filtroActual: 'todas',
@@ -205,6 +210,7 @@
             estado.datosSeleccionados = Array.from(document.querySelectorAll('.dato-checkbox:checked')).map(c => c.value);
             
             if (estado.datosSeleccionados.length === 0) {
+                estado.serviciosRecomendados = [];
                 document.getElementById('pasoIntermedio').classList.remove('active');
                 document.getElementById('serviciosRecomendados').classList.remove('active');
                 renderizarServicios();
@@ -353,11 +359,10 @@
 
             listEl.innerHTML = filtrados.map(s => {
                 const esRecomendado = estado.serviciosRecomendados.includes(s.id);
-                const esActivo = estado.servicioActual?.id === s.id;
-                const clases = `servicio-item ${esActivo ? 'active' : ''} ${esRecomendado ? 'recomendado' : ''}`;
+                const icono = CATEGORY_ICONS[s.categoria] || '📄';
+                const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
                 const label = `${s.nombre}${esRecomendado ? ' (recomendado)' : ''}`;
-                const current = esActivo ? ' aria-current="true"' : '';
-                return `<button type="button" class="${clases}" data-servicio-id="${s.id}" aria-label="${label.replace(/"/g, '&quot;')}"${current}>${s.nombre} ${esRecomendado ? '⭐' : ''}</button>`;
+                return `<button type="button" class="${clases}" data-servicio-id="${s.id}" aria-label="${label.replace(/"/g, '&quot;')}"><span class="tile-icon" aria-hidden="true">${icono}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${s.nombre}</span></button>`;
             }).join('');
         }
 
@@ -366,7 +371,7 @@
             if (!s) return;
             estado.servicioActual = s;
 
-            document.getElementById('emptyState').style.display = 'none';
+            document.getElementById('serviciosList').style.display = 'none';
             document.getElementById('detailPanel').classList.add('active');
 
             document.getElementById('servicioNombre').textContent = s.nombre;
@@ -387,7 +392,6 @@
             `).join('');
 
             activarTab('informacion', { focusTab: false });
-            renderizarServicios();
             requestAnimationFrame(() => {
                 document.getElementById('servicioNombre').focus();
             });
@@ -446,6 +450,12 @@
         });
 
         document.getElementById('cancelarSolicitud').addEventListener('click', cerrarModalSolicitud);
+
+        document.getElementById('btnVolver').addEventListener('click', () => {
+            document.getElementById('detailPanel').classList.remove('active');
+            document.getElementById('serviciosList').style.display = '';
+            estado.servicioActual = null;
+        });
 
         function generarNota() {
             const fecha = new Date().toLocaleDateString('es-AR');
