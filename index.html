@@ -349,7 +349,7 @@
                 const matchCat = estado.filtroActual === 'todas' || s.categoria === estado.filtroActual;
                 const matchBusq = estado.busquedaActual === '' || s.nombre.toLowerCase().includes(estado.busquedaActual.toLowerCase());
                 return matchCat && matchBusq;
-            });
+            }).sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
 
             const listEl = document.getElementById('serviciosList');
             if (filtrados.length === 0) {
@@ -362,7 +362,10 @@
                 const icono = CATEGORY_ICONS[s.categoria] || '📄';
                 const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
                 const label = `${s.nombre}${esRecomendado ? ' (recomendado)' : ''}`;
-                return `<button type="button" class="${clases}" data-servicio-id="${s.id}" aria-label="${label.replace(/"/g, '&quot;')}"><span class="tile-icon" aria-hidden="true">${icono}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${s.nombre}</span></button>`;
+                const iconoHtml = s.dominio
+                    ? `<img src="https://www.google.com/s2/favicons?domain=${s.dominio}&sz=64" alt="" class="tile-favicon">`
+                    : icono;
+                return `<button type="button" class="${clases}" data-servicio-id="${s.id}" aria-label="${label.replace(/"/g, '&quot;')}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${s.nombre}</span></button>`;
             }).join('');
         }
 
@@ -386,6 +389,7 @@
             document.getElementById('contactosList').innerHTML = s.contactos.map(c => `
                 <div class="contact-item">
                     <strong>${c.nombre}</strong>
+                    ${c.url ? `<div class="contact-detail">🌐 <a href="${c.url}" target="_blank" rel="noopener noreferrer">${c.url}</a></div>` : ''}
                     ${c.email ? `<div class="contact-detail">📧 <a href="mailto:${c.email}">${c.email}</a></div>` : ''}
                     ${c.telefono ? `<div class="contact-detail">📞 ${c.telefono}</div>` : ''}
                 </div>
