@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'none'; object-src 'none'; frame-ancestors 'none';">
     <title>Asistente de Solicitudes</title>
     <link rel="stylesheet" href="asot.css">
 </head>
@@ -144,17 +146,17 @@
 
                 <div class="form-group">
                     <label for="formReferencia">Referencia (IPP / Causa)</label>
-                    <input type="text" id="formReferencia" placeholder="IPP 11-11-00000-20/00">
+                    <input type="text" id="formReferencia" placeholder="IPP 11-11-00000-20/00" autocomplete="off">
                 </div>
 
                 <div class="form-group">
                     <label for="formDatos">Información Solicitada</label>
-                    <textarea id="formDatos" placeholder="Especifica qué información necesitas..."></textarea>
+                    <textarea id="formDatos" placeholder="Especifica qué información necesitas..." autocomplete="off"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="formJustificacion">Justificación / Carátula</label>
-                    <textarea id="formJustificacion" placeholder="Caratulada: '...' con intervención de..."></textarea>
+                    <textarea id="formJustificacion" placeholder="Caratulada: '...' con intervención de..." autocomplete="off"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -164,7 +166,7 @@
 
                 <div class="form-group">
                     <label for="formNotas">Notas Adicionales</label>
-                    <textarea id="formNotas" placeholder="Notas importantes (ej: Conversión GMT-300)..."></textarea>
+                    <textarea id="formNotas" placeholder="Notas importantes (ej: Conversión GMT-300)..." autocomplete="off"></textarea>
                 </div>
 
                 <h3 id="preview-heading" style="margin-top: 20px; margin-bottom: 10px; color: #0d3b5c; font-weight: 700; border-bottom: 2px solid #ff9500; padding-bottom: 8px;">Vista Previa</h3>
@@ -190,6 +192,20 @@
             financiero: '🏦',
             registros: '📋'
         };
+
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function esUrlSegura(url) {
+            return typeof url === 'string' && /^https?:\/\//i.test(url);
+        }
 
         let estado = {
             servicioActual: null,
@@ -225,7 +241,7 @@
 
             document.getElementById('pasoIntermedio').classList.add('active');
             document.getElementById('informacionObtenible').innerHTML = informacionUnica
-                .map(info => `<span class="informacion-tag">📌 ${info}</span>`)
+                .map(info => `<span class="informacion-tag">📌 ${escapeHtml(info)}</span>`)
                 .join('');
 
             const serviciosTot = new Set();
@@ -242,7 +258,7 @@
                     .map(id => {
                         const s = servicios[id];
                         if (s) {
-                            return `<button type="button" class="servicio-recomendado" data-servicio-id="${id}">${s.nombre}</button>`;
+                            return `<button type="button" class="servicio-recomendado" data-servicio-id="${escapeHtml(id)}">${escapeHtml(s.nombre)}</button>`;
                         }
                         return '';
                     })
@@ -361,11 +377,11 @@
                 const esRecomendado = estado.serviciosRecomendados.includes(s.id);
                 const icono = CATEGORY_ICONS[s.categoria] || '📄';
                 const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
-                const label = `${s.nombre}${esRecomendado ? ' (recomendado)' : ''}`;
-                const iconoHtml = s.dominio
-                    ? `<img src="https://www.google.com/s2/favicons?domain=${s.dominio}&sz=64" alt="" class="tile-favicon">`
+                const label = `${escapeHtml(s.nombre)}${esRecomendado ? ' (recomendado)' : ''}`;
+                const iconoHtml = s.id
+                    ? `<img src="icons/${escapeHtml(s.id)}.png" alt="" class="tile-favicon">`
                     : icono;
-                return `<button type="button" class="${clases}" data-servicio-id="${s.id}" aria-label="${label.replace(/"/g, '&quot;')}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${s.nombre}</span></button>`;
+                return `<button type="button" class="${clases}" data-servicio-id="${escapeHtml(s.id)}" aria-label="${label}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${escapeHtml(s.nombre)}</span></button>`;
             }).join('');
         }
 
@@ -380,18 +396,18 @@
             document.getElementById('servicioNombre').textContent = s.nombre;
             document.getElementById('servicioCategoria').textContent = s.categoria.toUpperCase();
 
-            document.getElementById('queInformacion').innerHTML = s.queInformacion.map(i => `<div class="list-item">${i}</div>`).join('');
-            document.getElementById('requisitosLegales').innerHTML = s.requisitosLegales.map(i => `<div class="list-item">${i}</div>`).join('');
-            document.getElementById('procedimiento').innerHTML = `<div class="info-item">${s.procedimiento}</div>`;
+            document.getElementById('queInformacion').innerHTML = s.queInformacion.map(i => `<div class="list-item">${escapeHtml(i)}</div>`).join('');
+            document.getElementById('requisitosLegales').innerHTML = s.requisitosLegales.map(i => `<div class="list-item">${escapeHtml(i)}</div>`).join('');
+            document.getElementById('procedimiento').innerHTML = `<div class="info-item">${escapeHtml(s.procedimiento)}</div>`;
             document.getElementById('tiempoRespuesta').textContent = s.tiempoRespuesta;
-            document.getElementById('notas').innerHTML = `<div class="info-item">${s.notas}</div>`;
+            document.getElementById('notas').innerHTML = `<div class="info-item">${escapeHtml(s.notas)}</div>`;
 
             document.getElementById('contactosList').innerHTML = s.contactos.map(c => `
                 <div class="contact-item">
-                    <strong>${c.nombre}</strong>
-                    ${c.url ? `<div class="contact-detail">🌐 <a href="${c.url}" target="_blank" rel="noopener noreferrer">${c.url}</a></div>` : ''}
-                    ${c.email ? `<div class="contact-detail">📧 <a href="mailto:${c.email}">${c.email}</a></div>` : ''}
-                    ${c.telefono ? `<div class="contact-detail">📞 ${c.telefono}</div>` : ''}
+                    <strong>${escapeHtml(c.nombre)}</strong>
+                    ${c.url && esUrlSegura(c.url) ? `<div class="contact-detail">🌐 <a href="${escapeHtml(c.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(c.url)}</a></div>` : ''}
+                    ${c.email ? `<div class="contact-detail">📧 <a href="mailto:${escapeHtml(c.email)}">${escapeHtml(c.email)}</a></div>` : ''}
+                    ${c.telefono ? `<div class="contact-detail">📞 ${escapeHtml(c.telefono)}</div>` : ''}
                 </div>
             `).join('');
 
