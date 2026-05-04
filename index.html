@@ -379,7 +379,7 @@
                 const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
                 const label = `${escapeHtml(s.nombre)}${esRecomendado ? ' (recomendado)' : ''}`;
                 const iconoHtml = s.id
-                    ? `<img src="icons/${escapeHtml(s.id)}.png" alt="" class="tile-favicon">`
+                    ? `<img src="icons/${escapeHtml(s.id)}.png" alt="" class="tile-favicon" onerror="this.replaceWith(document.createTextNode('${icono}'))">`
                     : icono;
                 return `<button type="button" class="${clases}" data-servicio-id="${escapeHtml(s.id)}" aria-label="${label}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${escapeHtml(s.nombre)}</span></button>`;
             }).join('');
