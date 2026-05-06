@@ -78,6 +78,12 @@
             </aside>
 
             <main class="main" id="main-content" tabindex="-1">
+                <div id="welcomeBanner" class="welcome-banner">
+                    <span class="welcome-icon" aria-hidden="true">💡</span>
+                    <div class="welcome-text">
+                        <strong>Para empezar:</strong> tildá los datos disponibles en la barra izquierda, o seleccioná directamente un servicio de la lista.
+                    </div>
+                </div>
                 <div class="servicios-list" id="serviciosList" role="group" aria-label="Servicios disponibles"></div>
 
                 <div id="detailPanel" class="detail-panel">
@@ -88,9 +94,9 @@
                     </div>
 
                     <div class="tab-group" role="tablist" aria-label="Secciones del servicio seleccionado">
-                        <button type="button" class="tab-btn active" role="tab" id="tab-informacion" data-tab="informacion" aria-selected="true" aria-controls="informacion" tabindex="0">Información</button>
-                        <button type="button" class="tab-btn" role="tab" id="tab-contactos" data-tab="contactos" aria-selected="false" aria-controls="contactos" tabindex="-1">Contactos</button>
-                        <button type="button" class="tab-btn" role="tab" id="tab-solicitud" data-tab="solicitud" aria-selected="false" aria-controls="solicitud" tabindex="-1">Solicitud</button>
+                        <button type="button" class="tab-btn active" role="tab" id="tab-informacion" data-tab="informacion" aria-selected="true" aria-controls="informacion" tabindex="0"><span class="tab-icon" aria-hidden="true">📋</span>Información</button>
+                        <button type="button" class="tab-btn" role="tab" id="tab-contactos" data-tab="contactos" aria-selected="false" aria-controls="contactos" tabindex="-1"><span class="tab-icon" aria-hidden="true">📞</span>Contactos</button>
+                        <button type="button" class="tab-btn" role="tab" id="tab-solicitud" data-tab="solicitud" aria-selected="false" aria-controls="solicitud" tabindex="-1"><span class="tab-icon" aria-hidden="true">✏️</span>Solicitud</button>
                     </div>
 
                     <div id="informacion" class="tab-content active" role="tabpanel" aria-labelledby="tab-informacion" tabindex="0">
@@ -139,50 +145,106 @@
             </div>
 
             <form id="solicitudForm">
-                <div class="form-group">
-                    <label for="formServicio">Servicio</label>
-                    <input type="text" id="formServicio" readonly>
-                </div>
+                <fieldset class="form-section">
+                    <legend>Datos del expediente</legend>
 
-                <div class="form-group">
-                    <label for="formReferencia">Referencia (IPP / Causa)</label>
-                    <input type="text" id="formReferencia" placeholder="IPP 11-11-00000-20/00" autocomplete="off">
-                </div>
+                    <div class="form-group">
+                        <label for="formServicio">Servicio</label>
+                        <input type="text" id="formServicio" readonly>
+                    </div>
 
-                <div class="form-group">
-                    <label for="formDatos">Información Solicitada</label>
-                    <textarea id="formDatos" placeholder="Especifica qué información necesitas..." autocomplete="off"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="formReferencia">Nro. de actuaciones (IPP)</label>
+                        <input type="text" id="formReferencia" placeholder="11-11-00000-20/00" autocomplete="off">
+                    </div>
 
-                <div class="form-group">
-                    <label for="formJustificacion">Justificación / Carátula</label>
-                    <textarea id="formJustificacion" placeholder="Caratulada: '...' con intervención de..." autocomplete="off"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="formCaratula">Carátula</label>
+                        <input type="text" id="formCaratula" placeholder="Ej: HOMICIDIO" autocomplete="off">
+                    </div>
 
-                <div class="form-group">
-                    <label for="formEmail">Email a Enviar</label>
-                    <input type="email" id="formEmail" placeholder="Email del servicio">
-                </div>
+                    <div class="form-group">
+                        <label for="formFiscalia">Fiscalía</label>
+                        <input type="text" id="formFiscalia" placeholder="Ej: PCyF Nº 13" autocomplete="off">
+                    </div>
 
-                <div class="form-group">
-                    <label for="formNotas">Notas Adicionales</label>
-                    <textarea id="formNotas" placeholder="Notas importantes (ej: Conversión GMT-300)..." autocomplete="off"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="formFiscal">Fiscal a cargo (Dr/a.)</label>
+                        <input type="text" id="formFiscal" placeholder="Apellido y nombre" autocomplete="off">
+                    </div>
 
-                <h3 id="preview-heading" style="margin-top: 20px; margin-bottom: 10px; color: #0d3b5c; font-weight: 700; border-bottom: 2px solid #ff9500; padding-bottom: 8px;">Vista Previa</h3>
+                    <div class="form-group">
+                        <label for="formSecretaria">Secretaría (Dr/a)</label>
+                        <input type="text" id="formSecretaria" placeholder="Apellido y nombre" autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend>Destinatario</legend>
+
+                    <div class="form-group">
+                        <label for="formDestTitulo">Encabezado</label>
+                        <input type="text" id="formDestTitulo" placeholder="SEÑORES" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formDestOrganismo">Organismo</label>
+                        <input type="text" id="formDestOrganismo" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formDestSector">Área / Sector (opcional)</label>
+                        <input type="text" id="formDestSector" placeholder="DEPARTAMENTO LEGALES" autocomplete="off">
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend>Solicitud</legend>
+
+                    <div class="form-group">
+                        <label id="formQueSolicitarLabel">¿Qué solicitar?</label>
+                        <div class="datos-checkbox-group" id="formQueSolicitarGroup" role="group" aria-labelledby="formQueSolicitarLabel"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formDatos">Aclaración o solicitud adicional (opcional)</label>
+                        <textarea id="formDatos" placeholder="Texto libre que se agrega al final de la solicitud (ej: rango de fechas, IPs específicas, etc.)" autocomplete="off"></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-section">
+                    <legend>Adicionales (no se incluyen en el Word)</legend>
+
+                    <div class="form-group">
+                        <label for="formEmail">Email a enviar</label>
+                        <input type="email" id="formEmail" placeholder="Email del servicio">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formNotas">Notas internas</label>
+                        <textarea id="formNotas" placeholder="Notas importantes (ej: Conversión GMT-300)..." autocomplete="off"></textarea>
+                    </div>
+                </fieldset>
+
+                <h3 id="preview-heading" style="margin-top: 20px; margin-bottom: 10px; color: #0d3b5c; font-weight: 700; border-bottom: 2px solid #b8243d; padding-bottom: 8px;">Vista previa de la nota</h3>
                 <div class="preview" id="preview" role="region" aria-labelledby="preview-heading"></div>
+
+                <p id="descargarStatus" class="form-status" role="status" aria-live="polite"></p>
 
                 <div class="button-group">
                     <button type="button" class="btn btn-secondary" id="cancelarSolicitud">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">💾 Guardar</button>
+                    <button type="button" class="btn btn-primary" id="descargarWord">⬇️ Descargar Word</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <script src="vendor/pizzip.min.js"></script>
     <script src="asot-data.js"></script>
+    <script src="asot-templates.js"></script>
     <script>
         const { datosAInformacion, informacionAServicios, servicios } = window.ASOT_DATA;
+        const TEMPLATES = window.ASOT_TEMPLATES || {};
 
         const CATEGORY_ICONS = {
             telecomunicaciones: '📞',
@@ -191,6 +253,15 @@
             transporte: '🚗',
             financiero: '🏦',
             registros: '📋'
+        };
+
+        const CATEGORY_LABELS = {
+            telecomunicaciones: 'Telecom',
+            isp: 'ISP',
+            plataformas: 'Plataforma',
+            transporte: 'Transporte',
+            financiero: 'Financiero',
+            registros: 'Registro'
         };
 
         function escapeHtml(str) {
@@ -360,7 +431,18 @@
             modalPreviousFocus = null;
         }
 
+        function actualizarBannerBienvenida() {
+            const banner = document.getElementById('welcomeBanner');
+            if (!banner) return;
+            const sinInteraccion = estado.datosSeleccionados.length === 0
+                && estado.busquedaActual === ''
+                && estado.filtroActual === 'todas'
+                && !estado.servicioActual;
+            banner.classList.toggle('hidden', !sinInteraccion);
+        }
+
         function renderizarServicios() {
+            actualizarBannerBienvenida();
             const filtrados = Object.values(servicios).filter(s => {
                 const matchCat = estado.filtroActual === 'todas' || s.categoria === estado.filtroActual;
                 const matchBusq = estado.busquedaActual === '' || s.nombre.toLowerCase().includes(estado.busquedaActual.toLowerCase());
@@ -376,12 +458,13 @@
             listEl.innerHTML = filtrados.map(s => {
                 const esRecomendado = estado.serviciosRecomendados.includes(s.id);
                 const icono = CATEGORY_ICONS[s.categoria] || '📄';
+                const catLabel = CATEGORY_LABELS[s.categoria] || s.categoria;
                 const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
                 const label = `${escapeHtml(s.nombre)}${esRecomendado ? ' (recomendado)' : ''}`;
                 const iconoHtml = s.id
                     ? `<img src="icons/${escapeHtml(s.id)}.png" alt="" class="tile-favicon" onerror="this.replaceWith(document.createTextNode('${icono}'))">`
                     : icono;
-                return `<button type="button" class="${clases}" data-servicio-id="${escapeHtml(s.id)}" aria-label="${label}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${escapeHtml(s.nombre)}</span></button>`;
+                return `<button type="button" class="${clases}" data-servicio-id="${escapeHtml(s.id)}" aria-label="${label}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${escapeHtml(s.nombre)}</span><span class="tile-category">${escapeHtml(catLabel)}</span></button>`;
             }).join('');
         }
 
@@ -392,6 +475,7 @@
 
             document.getElementById('serviciosList').style.display = 'none';
             document.getElementById('detailPanel').classList.add('active');
+            actualizarBannerBienvenida();
 
             document.getElementById('servicioNombre').textContent = s.nombre;
             document.getElementById('servicioCategoria').textContent = s.categoria.toUpperCase();
@@ -453,10 +537,36 @@
             activarTab(TAB_IDS[next], { focusTab: true });
         });
 
+        function renderQueSolicitarCheckboxes(servicio) {
+            const container = document.getElementById('formQueSolicitarGroup');
+            const items = (servicio && servicio.queInformacion) || [];
+            if (items.length === 0) {
+                container.innerHTML = '<p style="color:#666;font-size:0.85em;padding:8px;">No hay opciones predefinidas para este servicio.</p>';
+                return;
+            }
+            container.innerHTML = items.map((item, idx) => {
+                const id = `formQueSolicitar-${idx}`;
+                const safe = escapeHtml(item);
+                return `<label class="datos-checkbox-item">
+                    <input type="checkbox" class="form-que-solicitar-checkbox" id="${id}" value="${safe}">
+                    <span class="dato-label">${safe}</span>
+                </label>`;
+            }).join('');
+            container.querySelectorAll('.form-que-solicitar-checkbox').forEach(cb => {
+                cb.addEventListener('change', actualizarPreview);
+            });
+        }
+
         document.getElementById('generarSolicitudBtn').addEventListener('click', () => {
             const s = estado.servicioActual;
             document.getElementById('formServicio').value = s.nombre;
             document.getElementById('formEmail').value = s.contactos[0]?.email || '';
+            const destTitulo = document.getElementById('formDestTitulo');
+            const destOrg = document.getElementById('formDestOrganismo');
+            if (!destTitulo.value) destTitulo.value = 'SEÑORES';
+            if (!destOrg.value) destOrg.value = (s.nombre || '').toUpperCase();
+            renderQueSolicitarCheckboxes(s);
+            mostrarStatus('', false);
             actualizarPreview();
             abrirModalSolicitud();
         });
@@ -475,40 +585,163 @@
             document.getElementById('detailPanel').classList.remove('active');
             document.getElementById('serviciosList').style.display = '';
             estado.servicioActual = null;
+            actualizarBannerBienvenida();
         });
 
+        const MESES_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+            'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+        function formatFechaEs(date) {
+            const d = date || new Date();
+            return `${d.getDate()} de ${MESES_ES[d.getMonth()]} del ${d.getFullYear()}`;
+        }
+
+        function valorCampo(id) {
+            return (document.getElementById(id).value || '').trim();
+        }
+
+        function recolectarSolicitud() {
+            const items = Array.from(document.querySelectorAll('.form-que-solicitar-checkbox:checked'))
+                .map(c => `- ${c.value}`);
+            const libre = valorCampo('formDatos');
+            const partes = [];
+            if (items.length > 0) partes.push(items.join('\n'));
+            if (libre) partes.push(libre);
+            return partes.join('\n');
+        }
+
+        function recolectarDatos() {
+            return {
+                fecha: formatFechaEs(),
+                destinatario_titulo: valorCampo('formDestTitulo'),
+                destinatario_organismo: valorCampo('formDestOrganismo'),
+                destinatario_sector: valorCampo('formDestSector'),
+                ipp: valorCampo('formReferencia'),
+                caratula: valorCampo('formCaratula'),
+                fiscalia: valorCampo('formFiscalia'),
+                fiscal: valorCampo('formFiscal'),
+                secretaria: valorCampo('formSecretaria'),
+                solicitud: recolectarSolicitud()
+            };
+        }
+
         function generarNota() {
-            const fecha = new Date().toLocaleDateString('es-AR');
-            return `NOTA DE SOLICITUD
-════════════════════════════════════════════
-SERVICIO: ${document.getElementById('formServicio').value}
-FECHA: ${fecha}
-REFERENCIA: ${document.getElementById('formReferencia').value || '---'}
+            const d = recolectarDatos();
+            const ph = v => v || '_______';
+            const sectorLine = d.destinatario_sector ? `\n${d.destinatario_sector}` : '';
+            return `GOBIERNO DE LA CIUDAD AUTÓNOMA DE BUENOS AIRES
+MINISTERIO DE SEGURIDAD — POLICÍA DE LA CIUDAD
 
-INFORMACIÓN SOLICITADA:
-${document.getElementById('formDatos').value || '(sin especificar)'}
+Buenos Aires, ${d.fecha}.
 
-JUSTIFICACIÓN:
-${document.getElementById('formJustificacion').value || '(sin especificar)'}
+${ph(d.destinatario_titulo)}
+${ph(d.destinatario_organismo)}${sectorLine}
 
-NOTAS:
-${document.getElementById('formNotas').value || '(sin notas)'}
-════════════════════════════════════════════`;
+Con motivo de actuaciones que se labran en esta Dependencia bajo el Nro. ${ph(d.ipp)}, caratuladas “${ph(d.caratula)}”, con intervención de la Fiscalía ${ph(d.fiscalia)}, a cargo del Dr/a. ${ph(d.fiscal)}, Secretaría Dr/a ${ph(d.secretaria)}, quien dispone la presente diligencia.
+
+En tal sentido, solicito a Ud. y/o personal a su cargo, ${ph(d.solicitud)}
+
+____________________________________
+JERARQUIA, NOMBRE Y APELLIDO, L.P.
+Dependencia donde revista servicio
+FIRMA`;
         }
 
         function actualizarPreview() {
             document.getElementById('preview').textContent = generarNota();
         }
 
-        ['formServicio', 'formReferencia', 'formDatos', 'formJustificacion', 'formEmail', 'formNotas'].forEach(id => {
+        const CAMPOS_PREVIEW = [
+            'formServicio', 'formReferencia', 'formCaratula', 'formFiscalia',
+            'formFiscal', 'formSecretaria', 'formDestTitulo', 'formDestOrganismo',
+            'formDestSector', 'formDatos'
+        ];
+        CAMPOS_PREVIEW.forEach(id => {
             document.getElementById(id).addEventListener('input', actualizarPreview);
         });
 
+        function xmlEscape(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
+
+        function base64ToUint8Array(b64) {
+            const bin = atob(b64);
+            const out = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+            return out;
+        }
+
+        function nombreArchivo(datos) {
+            const base = (datos.ipp || 'sin-ipp').replace(/[\\/:*?"<>|]+/g, '_').slice(0, 40);
+            return `nota-solicitud-${base}.docx`;
+        }
+
+        function mostrarStatus(msg, isError) {
+            const el = document.getElementById('descargarStatus');
+            el.textContent = msg || '';
+            el.classList.toggle('form-status-error', !!isError);
+        }
+
+        function descargarNotaWord() {
+            const tpl = TEMPLATES['default'];
+            if (!tpl) {
+                mostrarStatus('No hay plantilla configurada.', true);
+                return;
+            }
+            if (typeof window.PizZip === 'undefined') {
+                mostrarStatus('No se pudo cargar PizZip (vendor/pizzip.min.js).', true);
+                return;
+            }
+            try {
+                const zip = new PizZip(base64ToUint8Array(tpl.b64));
+                const docFile = zip.file('word/document.xml');
+                if (!docFile) throw new Error('La plantilla no contiene word/document.xml');
+                let xml = docFile.asText();
+
+                const datos = recolectarDatos();
+                const claves = Object.keys(datos).sort((a, b) => b.length - a.length);
+                for (const k of claves) {
+                    let valor = xmlEscape(datos[k]);
+                    if (k === 'solicitud') {
+                        valor = valor.replace(/\n/g, '</w:t><w:br/><w:t xml:space="preserve">');
+                    }
+                    xml = xml.split('{' + k + '}').join(valor);
+                }
+
+                zip.file('word/document.xml', xml);
+                const blob = zip.generate({
+                    type: 'blob',
+                    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    compression: 'DEFLATE'
+                });
+
+                const url = URL.createObjectURL(blob);
+                const filename = nombreArchivo(datos);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                mostrarStatus(`✅ Descargado: ${filename}`, false);
+            } catch (err) {
+                console.error(err);
+                mostrarStatus(`❌ Error al generar el Word: ${err.message}`, true);
+            }
+        }
+
+        document.getElementById('descargarWord').addEventListener('click', descargarNotaWord);
+
         document.getElementById('solicitudForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('✅ Solicitud guardada correctamente');
-            document.getElementById('solicitudForm').reset();
-            cerrarModalSolicitud();
+            descargarNotaWord();
         });
 
         renderizarServicios();
