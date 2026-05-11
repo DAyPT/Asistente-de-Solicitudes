@@ -18,75 +18,61 @@
         </header>
 
         <div class="content">
-            <aside class="sidebar" aria-label="Filtros y listado de servicios">
-                <div class="modulo-datos">
-                    <h3 id="datos-heading">1️⃣ ¿Qué datos tienes?</h3>
-                    <div class="datos-checkbox-group" role="group" aria-labelledby="datos-heading">
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-telefono" value="telefono">
-                            <span class="dato-label">☎️ Número de teléfono</span>
-                        </label>
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-ip" value="ip">
-                            <span class="dato-label">🌐 Dirección IP</span>
-                        </label>
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-email" value="email">
-                            <span class="dato-label">📧 Email</span>
-                        </label>
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-cuenta_banco" value="cuenta_banco">
-                            <span class="dato-label">🏦 Cuenta bancaria / Tarjeta</span>
-                        </label>
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-usuario_redsocial" value="usuario_redsocial">
-                            <span class="dato-label">📱 Usuario red social / Nickname</span>
-                        </label>
-                        <label class="datos-checkbox-item">
-                            <input type="checkbox" class="dato-checkbox" id="dato-vehiculo" value="vehiculo">
-                            <span class="dato-label">🚗 Patente vehículo</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="paso-intermedio" id="pasoIntermedio" role="region" aria-labelledby="paso-intermedio-title">
-                    <h4 id="paso-intermedio-title">2️⃣ Información obtenible</h4>
-                    <div id="informacionObtenible" aria-live="polite"></div>
-                </div>
-
-                <div class="servicios-recomendados" id="serviciosRecomendados" role="region" aria-labelledby="servicios-rec-title">
-                    <h4 id="servicios-rec-title">3️⃣ Servicios a solicitar</h4>
-                    <div id="serviciosRecomendadosList" aria-live="polite"></div>
-                </div>
-
-                <div class="search-box">
-                    <label for="searchInput" class="visually-hidden">Buscar servicio por nombre</label>
-                    <input type="search" id="searchInput" placeholder="Buscar servicio..." autocomplete="off">
-                </div>
-
-                <div class="category-filter" role="group" aria-labelledby="cat-heading">
-                    <h3 id="cat-heading">Categorías</h3>
-                    <button type="button" class="category-btn active" data-category="todas" aria-pressed="true">Todas</button>
-                    <button type="button" class="category-btn" data-category="telecomunicaciones" aria-pressed="false">Telecomunicaciones</button>
-                    <button type="button" class="category-btn" data-category="isp" aria-pressed="false">ISP (Internet)</button>
-                    <button type="button" class="category-btn" data-category="plataformas" aria-pressed="false">Plataformas y Redes</button>
-                    <button type="button" class="category-btn" data-category="transporte" aria-pressed="false">Transporte</button>
-                    <button type="button" class="category-btn" data-category="financiero" aria-pressed="false">Financiero y Bancos</button>
-                    <button type="button" class="category-btn" data-category="registros" aria-pressed="false">Registros</button>
-                </div>
-
-            </aside>
-
             <main class="main" id="main-content" tabindex="-1">
-                <div id="welcomeBanner" class="welcome-banner">
-                    <span class="welcome-icon" aria-hidden="true">💡</span>
-                    <div class="welcome-text">
-                        <strong>Para empezar:</strong> tildá los datos disponibles en la barra izquierda, o seleccioná directamente un servicio de la lista.
-                    </div>
-                </div>
-                <div class="servicios-list" id="serviciosList" role="group" aria-label="Servicios disponibles"></div>
 
-                <div id="detailPanel" class="detail-panel">
+                <!-- ESTADO A: Home asistente -->
+                <section id="estadoHome" class="estado" aria-labelledby="home-pregunta-title">
+                    <div class="home-pregunta">
+                        <h2 id="home-pregunta-title">¿Qué datos tenés disponibles?</h2>
+                        <p>Tildá uno o más para ver qué podés pedir y a quién.</p>
+                    </div>
+                    <div class="datos-grid" id="datosGrid" role="group" aria-labelledby="home-pregunta-title"></div>
+                    <div class="separador" aria-hidden="true">o bien</div>
+                    <div class="busqueda-directa">
+                        <label for="busquedaDirecta" class="visually-hidden">Buscar servicio directamente</label>
+                        <input type="search" id="busquedaDirecta" placeholder="🔍 Buscar servicio directamente (ej: Movistar, Google)" autocomplete="off">
+                    </div>
+                    <button type="button" class="ver-todos-link" id="btnVerTodos">» Ver todos los servicios</button>
+                </section>
+
+                <!-- ESTADO B: Resultados -->
+                <section id="estadoResultados" class="estado" hidden aria-label="Resultados según los datos seleccionados">
+                    <div class="chips-bar">
+                        <span class="chips-bar-label">Datos:</span>
+                        <div id="chipsList" class="chips-list"></div>
+                        <button type="button" class="chip-add" id="btnAgregarMas">+ agregar</button>
+                    </div>
+                    <div class="info-block">
+                        <div class="block-title">Podés solicitar</div>
+                        <div class="info-tags" id="infoTags" aria-live="polite"></div>
+                    </div>
+                    <div class="servicios-block">
+                        <div class="block-title">Servicios sugeridos <span id="cantSugeridos" class="cant-sugeridos"></span></div>
+                        <div class="servicios-grid" id="serviciosSugeridosGrid" aria-live="polite"></div>
+                    </div>
+                    <button type="button" class="empezar-de-nuevo" id="btnLimpiar">← Empezar de nuevo</button>
+                </section>
+
+                <!-- ESTADO C: Catálogo completo -->
+                <section id="estadoCatalogo" class="estado" hidden aria-label="Catálogo completo de servicios">
+                    <div class="catalogo-header">
+                        <button type="button" class="btn-volver" id="btnVolverDesdeCatalogo">← Volver al asistente</button>
+                        <h2>Todos los servicios</h2>
+                    </div>
+                    <div class="catalogo-controles">
+                        <div class="search-box">
+                            <label for="searchInput" class="visually-hidden">Buscar servicio por nombre</label>
+                            <input type="search" id="searchInput" placeholder="🔍 Buscar servicio..." autocomplete="off">
+                        </div>
+                        <div class="category-filter" id="categoryFilter" role="group" aria-label="Filtrar por categoría">
+                            <button type="button" class="category-btn active" data-category="todas" aria-pressed="true">Todas</button>
+                        </div>
+                    </div>
+                    <div class="servicios-list" id="serviciosList" role="group" aria-label="Servicios disponibles"></div>
+                </section>
+
+                <!-- ESTADO D: Detalle de servicio -->
+                <div id="detailPanel" class="detail-panel estado" hidden>
                     <div class="detail-header">
                         <button type="button" class="btn-volver" id="btnVolver">← Volver</button>
                         <h2 id="servicioNombre" tabindex="-1"></h2>
@@ -213,16 +199,15 @@
                 </fieldset>
 
                 <fieldset class="form-section">
-                    <legend>Adicionales (no se incluyen en el Word)</legend>
+                    <legend>Envío del oficio</legend>
 
                     <div class="form-group">
-                        <label for="formEmail">Email a enviar</label>
-                        <input type="email" id="formEmail" placeholder="Email del servicio">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="formNotas">Notas internas</label>
-                        <textarea id="formNotas" placeholder="Notas importantes (ej: Conversión GMT-300)..." autocomplete="off"></textarea>
+                        <label for="formEmail">Email del destinatario</label>
+                        <div class="input-with-action">
+                            <input type="email" id="formEmail" placeholder="Email del servicio">
+                            <button type="button" class="btn-copy" id="btnCopiarEmail" aria-label="Copiar email al portapapeles">📋 Copiar</button>
+                        </div>
+                        <p class="form-hint" id="copyHint" aria-live="polite"></p>
                     </div>
                 </fieldset>
 
@@ -243,26 +228,11 @@
     <script src="asot-data.js"></script>
     <script src="asot-templates.js"></script>
     <script>
-        const { datosAInformacion, informacionAServicios, servicios } = window.ASOT_DATA;
+        const { datosAInformacion, informacionAServicios, servicios, datosDisponibles, categorias } = window.ASOT_DATA;
         const TEMPLATES = window.ASOT_TEMPLATES || {};
 
-        const CATEGORY_ICONS = {
-            telecomunicaciones: '📞',
-            isp: '🌐',
-            plataformas: '📱',
-            transporte: '🚗',
-            financiero: '🏦',
-            registros: '📋'
-        };
-
-        const CATEGORY_LABELS = {
-            telecomunicaciones: 'Telecom',
-            isp: 'ISP',
-            plataformas: 'Plataforma',
-            transporte: 'Transporte',
-            financiero: 'Financiero',
-            registros: 'Registro'
-        };
+        const CATEGORY_ICONS = Object.fromEntries(categorias.map(c => [c.id, c.emoji]));
+        const CATEGORY_LABELS = Object.fromEntries(categorias.map(c => [c.id, c.labelCorto]));
 
         function escapeHtml(str) {
             if (str == null) return '';
@@ -278,83 +248,174 @@
             return typeof url === 'string' && /^https?:\/\//i.test(url);
         }
 
-        let estado = {
+        const estado = {
+            vista: 'home',
+            vistaAnterior: 'home',
             servicioActual: null,
+            seleccionados: new Set(),
             filtroActual: 'todas',
-            busquedaActual: '',
-            datosSeleccionados: [],
-            serviciosRecomendados: []
+            busquedaActual: ''
         };
 
         const TAB_IDS = ['informacion', 'contactos', 'solicitud'];
         let modalPreviousFocus = null;
 
-        document.querySelectorAll('.dato-checkbox').forEach(checkbox => {
-            checkbox.addEventListener('change', actualizarFlujo);
-        });
+        const VISTAS = ['estadoHome', 'estadoResultados', 'estadoCatalogo'];
+        const VISTA_TO_EL = {
+            home: 'estadoHome',
+            resultados: 'estadoResultados',
+            catalogo: 'estadoCatalogo'
+        };
+
+        function setVista(nombre) {
+            if (!VISTA_TO_EL[nombre] && nombre !== 'detalle') return;
+            if (nombre === 'detalle') {
+                estado.vistaAnterior = estado.vista;
+            }
+            estado.vista = nombre;
+            VISTAS.forEach(id => {
+                document.getElementById(id).hidden = (VISTA_TO_EL[nombre] !== id);
+            });
+            document.getElementById('detailPanel').hidden = (nombre !== 'detalle');
+            if (nombre === 'catalogo') renderizarServicios();
+        }
+
+        function renderDatosGrid() {
+            const cont = document.getElementById('datosGrid');
+            cont.innerHTML = datosDisponibles.map(d => {
+                const activo = estado.seleccionados.has(d.id);
+                return `<button type="button" class="dato-card${activo ? ' activo' : ''}" data-id="${escapeHtml(d.id)}" aria-pressed="${activo}">
+                    <span class="dato-emoji" aria-hidden="true">${escapeHtml(d.emoji)}</span>
+                    <span class="dato-label">${escapeHtml(d.label)}</span>
+                </button>`;
+            }).join('');
+        }
+
+        function calcularInfoYServicios() {
+            const info = new Set();
+            estado.seleccionados.forEach(d => (datosAInformacion[d] || []).forEach(i => info.add(i)));
+            const sv = new Set();
+            info.forEach(i => (informacionAServicios[i] || []).forEach(id => sv.add(id)));
+            return { info: [...info], servicios: [...sv] };
+        }
+
+        function renderChips() {
+            const cont = document.getElementById('chipsList');
+            cont.innerHTML = [...estado.seleccionados].map(id => {
+                const d = datosDisponibles.find(x => x.id === id);
+                if (!d) return '';
+                return `<span class="chip">${escapeHtml(d.emoji)} ${escapeHtml(d.label)} <button type="button" data-quitar="${escapeHtml(id)}" aria-label="Quitar ${escapeHtml(d.label)}">✕</button></span>`;
+            }).join('');
+        }
+
+        function renderResultados() {
+            const r = calcularInfoYServicios();
+            renderChips();
+
+            const infoEl = document.getElementById('infoTags');
+            infoEl.innerHTML = r.info.length
+                ? r.info.map(i => `<span class="info-tag">${escapeHtml(i)}</span>`).join('')
+                : '<span style="color:#888;font-size:0.9em">— sin información mapeada para esta combinación —</span>';
+
+            document.getElementById('cantSugeridos').textContent = r.servicios.length ? `(${r.servicios.length})` : '';
+            const grid = document.getElementById('serviciosSugeridosGrid');
+            grid.innerHTML = r.servicios.length
+                ? r.servicios.map(id => {
+                    const s = servicios[id];
+                    if (!s) return '';
+                    const emoji = CATEGORY_ICONS[s.categoria] || '📄';
+                    const cat = CATEGORY_LABELS[s.categoria] || s.categoria;
+                    return `<button type="button" class="servicio-card" data-servicio-id="${escapeHtml(s.id)}">
+                        <img src="icons/${escapeHtml(s.id)}.png" alt="" class="servicio-icono" onerror="this.outerHTML='<span class=\\'servicio-icono-fallback\\'>${emoji}</span>'">
+                        <span class="servicio-nombre">${escapeHtml(s.nombre)}</span>
+                        <span class="servicio-categoria">${escapeHtml(cat)}</span>
+                    </button>`;
+                }).join('')
+                : '<span style="color:#888;font-size:0.9em">— ningún servicio sugerido para esta combinación —</span>';
+        }
 
         function actualizarFlujo() {
-            estado.datosSeleccionados = Array.from(document.querySelectorAll('.dato-checkbox:checked')).map(c => c.value);
-            
-            if (estado.datosSeleccionados.length === 0) {
-                estado.serviciosRecomendados = [];
-                document.getElementById('pasoIntermedio').classList.remove('active');
-                document.getElementById('serviciosRecomendados').classList.remove('active');
-                renderizarServicios();
-                return;
-            }
-
-            const informacionTot = [];
-            estado.datosSeleccionados.forEach(dato => {
-                informacionTot.push(...(datosAInformacion[dato] || []));
-            });
-            const informacionUnica = [...new Set(informacionTot)];
-
-            document.getElementById('pasoIntermedio').classList.add('active');
-            document.getElementById('informacionObtenible').innerHTML = informacionUnica
-                .map(info => `<span class="informacion-tag">📌 ${escapeHtml(info)}</span>`)
-                .join('');
-
-            const serviciosTot = new Set();
-            informacionUnica.forEach(info => {
-                (informacionAServicios[info] || []).forEach(id => serviciosTot.add(id));
-            });
-            estado.serviciosRecomendados = Array.from(serviciosTot);
-
-            if (estado.serviciosRecomendados.length === 0) {
-                document.getElementById('serviciosRecomendados').classList.remove('active');
+            renderDatosGrid();
+            if (estado.seleccionados.size === 0) {
+                setVista('home');
             } else {
-                document.getElementById('serviciosRecomendados').classList.add('active');
-                document.getElementById('serviciosRecomendadosList').innerHTML = estado.serviciosRecomendados
-                    .map(id => {
-                        const s = servicios[id];
-                        if (s) {
-                            return `<button type="button" class="servicio-recomendado" data-servicio-id="${escapeHtml(id)}">${escapeHtml(s.nombre)}</button>`;
-                        }
-                        return '';
-                    })
-                    .join('');
+                renderResultados();
+                setVista('resultados');
             }
-
-            renderizarServicios();
         }
+
+        renderDatosGrid();
+
+        document.getElementById('datosGrid').addEventListener('click', (e) => {
+            const card = e.target.closest('.dato-card');
+            if (!card) return;
+            const id = card.dataset.id;
+            if (estado.seleccionados.has(id)) estado.seleccionados.delete(id);
+            else estado.seleccionados.add(id);
+            actualizarFlujo();
+        });
+
+        document.getElementById('chipsList').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-quitar]');
+            if (!btn) return;
+            estado.seleccionados.delete(btn.dataset.quitar);
+            actualizarFlujo();
+        });
+
+        document.getElementById('serviciosSugeridosGrid').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-servicio-id]');
+            if (btn) seleccionarServicio(btn.getAttribute('data-servicio-id'));
+        });
+
+        document.getElementById('btnLimpiar').addEventListener('click', () => {
+            estado.seleccionados.clear();
+            actualizarFlujo();
+        });
+
+        document.getElementById('btnAgregarMas').addEventListener('click', () => {
+            setVista('home');
+        });
+
+        document.getElementById('btnVerTodos').addEventListener('click', () => {
+            setVista('catalogo');
+        });
+
+        document.getElementById('btnVolverDesdeCatalogo').addEventListener('click', () => {
+            actualizarFlujo();
+        });
+
+        document.getElementById('busquedaDirecta').addEventListener('input', (e) => {
+            const v = e.target.value;
+            estado.busquedaActual = v;
+            document.getElementById('searchInput').value = v;
+            setVista('catalogo');
+        });
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
             estado.busquedaActual = e.target.value;
             renderizarServicios();
         });
 
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.category-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-pressed', 'false');
-                });
-                btn.classList.add('active');
-                btn.setAttribute('aria-pressed', 'true');
-                estado.filtroActual = btn.dataset.category;
-                renderizarServicios();
+        function renderizarCategorias() {
+            const cont = document.getElementById('categoryFilter');
+            const botones = categorias.map(c =>
+                `<button type="button" class="category-btn" data-category="${escapeHtml(c.id)}" aria-pressed="false">${escapeHtml(c.label)}</button>`
+            ).join('');
+            cont.insertAdjacentHTML('beforeend', botones);
+        }
+        renderizarCategorias();
+
+        document.getElementById('categoryFilter').addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-btn');
+            if (!btn) return;
+            document.querySelectorAll('#categoryFilter .category-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
             });
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            estado.filtroActual = btn.dataset.category;
+            renderizarServicios();
         });
 
         function activarTab(tabId, { focusTab = true } = {}) {
@@ -431,18 +492,7 @@
             modalPreviousFocus = null;
         }
 
-        function actualizarBannerBienvenida() {
-            const banner = document.getElementById('welcomeBanner');
-            if (!banner) return;
-            const sinInteraccion = estado.datosSeleccionados.length === 0
-                && estado.busquedaActual === ''
-                && estado.filtroActual === 'todas'
-                && !estado.servicioActual;
-            banner.classList.toggle('hidden', !sinInteraccion);
-        }
-
         function renderizarServicios() {
-            actualizarBannerBienvenida();
             const filtrados = Object.values(servicios).filter(s => {
                 const matchCat = estado.filtroActual === 'todas' || s.categoria === estado.filtroActual;
                 const matchBusq = estado.busquedaActual === '' || s.nombre.toLowerCase().includes(estado.busquedaActual.toLowerCase());
@@ -456,15 +506,13 @@
             }
 
             listEl.innerHTML = filtrados.map(s => {
-                const esRecomendado = estado.serviciosRecomendados.includes(s.id);
-                const icono = CATEGORY_ICONS[s.categoria] || '📄';
-                const catLabel = CATEGORY_LABELS[s.categoria] || s.categoria;
-                const clases = `servicio-item${esRecomendado ? ' recomendado' : ''}`;
-                const label = `${escapeHtml(s.nombre)}${esRecomendado ? ' (recomendado)' : ''}`;
-                const iconoHtml = s.id
-                    ? `<img src="icons/${escapeHtml(s.id)}.png" alt="" class="tile-favicon" onerror="this.replaceWith(document.createTextNode('${icono}'))">`
-                    : icono;
-                return `<button type="button" class="${clases}" data-servicio-id="${escapeHtml(s.id)}" aria-label="${label}"><span class="tile-icon" aria-hidden="true">${iconoHtml}${esRecomendado ? '<span class="tile-star">⭐</span>' : ''}</span><span class="tile-name">${escapeHtml(s.nombre)}</span><span class="tile-category">${escapeHtml(catLabel)}</span></button>`;
+                const emoji = CATEGORY_ICONS[s.categoria] || '📄';
+                const cat = CATEGORY_LABELS[s.categoria] || s.categoria;
+                return `<button type="button" class="servicio-card" data-servicio-id="${escapeHtml(s.id)}" aria-label="${escapeHtml(s.nombre)}">
+                    <img src="icons/${escapeHtml(s.id)}.png" alt="" class="servicio-icono" onerror="this.outerHTML='<span class=\\'servicio-icono-fallback\\'>${emoji}</span>'">
+                    <span class="servicio-nombre">${escapeHtml(s.nombre)}</span>
+                    <span class="servicio-categoria">${escapeHtml(cat)}</span>
+                </button>`;
             }).join('');
         }
 
@@ -472,10 +520,7 @@
             const s = servicios[id];
             if (!s) return;
             estado.servicioActual = s;
-
-            document.getElementById('serviciosList').style.display = 'none';
-            document.getElementById('detailPanel').classList.add('active');
-            actualizarBannerBienvenida();
+            setVista('detalle');
 
             document.getElementById('servicioNombre').textContent = s.nombre;
             document.getElementById('servicioCategoria').textContent = s.categoria.toUpperCase();
@@ -504,13 +549,6 @@
         document.getElementById('serviciosList').addEventListener('click', (e) => {
             const btn = e.target.closest('[data-servicio-id]');
             if (btn && e.currentTarget.contains(btn)) {
-                seleccionarServicio(btn.getAttribute('data-servicio-id'));
-            }
-        });
-
-        document.getElementById('serviciosRecomendadosList').addEventListener('click', (e) => {
-            const btn = e.target.closest('[data-servicio-id]');
-            if (btn) {
                 seleccionarServicio(btn.getAttribute('data-servicio-id'));
             }
         });
@@ -581,11 +619,37 @@
 
         document.getElementById('cancelarSolicitud').addEventListener('click', cerrarModalSolicitud);
 
+        document.getElementById('btnCopiarEmail').addEventListener('click', async () => {
+            const input = document.getElementById('formEmail');
+            const hint = document.getElementById('copyHint');
+            const valor = (input.value || '').trim();
+            if (!valor) {
+                hint.textContent = 'No hay email para copiar.';
+                hint.className = 'form-hint form-hint-error';
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(valor);
+                hint.textContent = `✅ Copiado: ${valor}`;
+                hint.className = 'form-hint form-hint-ok';
+            } catch {
+                input.select();
+                try {
+                    document.execCommand('copy');
+                    hint.textContent = `✅ Copiado: ${valor}`;
+                    hint.className = 'form-hint form-hint-ok';
+                } catch {
+                    hint.textContent = 'No se pudo copiar automáticamente. Seleccioná y copiá con Ctrl+C.';
+                    hint.className = 'form-hint form-hint-error';
+                }
+            }
+            setTimeout(() => { hint.textContent = ''; hint.className = 'form-hint'; }, 3000);
+        });
+
         document.getElementById('btnVolver').addEventListener('click', () => {
-            document.getElementById('detailPanel').classList.remove('active');
-            document.getElementById('serviciosList').style.display = '';
             estado.servicioActual = null;
-            actualizarBannerBienvenida();
+            setVista(estado.vistaAnterior || 'home');
+            if (estado.vista === 'resultados') renderResultados();
         });
 
         const MESES_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
@@ -745,6 +809,7 @@ FIRMA`;
         });
 
         renderizarServicios();
+        setVista('home');
     </script>
 </body>
 </html>
