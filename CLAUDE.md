@@ -1,4 +1,6 @@
-# Asistente de Solicitudes — CLAUDE.md
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## ¿Qué es esta app?
 
@@ -20,6 +22,55 @@ No hay backend, build system runtime, ni dependencias de red. La app debe poder 
 ## Despliegue
 
 Actualmente en GitHub Pages (organización DAyPT). El objetivo es que sea completamente autocontenida y funcione offline sin depender de ningún servicio externo.
+
+Las únicas excepciones son GoatCounter (analytics, `gc.zgo.at` + `jesifu.goatcounter.com`) que ya están autorizadas en la CSP.
+
+## Comandos
+
+Regenerar `asot-templates.js` después de editar el .docx:
+```bash
+python templates/build-template.py
+```
+
+No hay servidor de desarrollo, tests, ni linter. Abrir `index.html` directamente en el navegador es suficiente para probar.
+
+## Flujo de datos
+
+El catálogo en `asot-data.js` define tres mapeos encadenados:
+
+```
+dato seleccionado (ej: 'telefono')
+  → datosAInformacion['telefono']  → ['Registro de Llamadas', 'Geolocalización', ...]
+  → informacionAServicios['Registro de Llamadas'] → ['movistar', 'personal', 'claro', ...]
+  → servicios['movistar']          → ficha completa del servicio
+```
+
+`calcularInfoYServicios()` en `index.html` realiza este recorrido a partir de `estado.seleccionados`.
+
+## Máquina de estados de la UI
+
+La variable `estado.vista` controla qué sección se muestra. `setVista(nombre)` aplica el cambio ocultando/mostrando secciones:
+
+| Vista | Elemento visible | Cuándo |
+|---|---|---|
+| `'home'` | `#estadoHome` | Sin datos seleccionados |
+| `'resultados'` | `#estadoResultados` | Con al menos un dato seleccionado |
+| `'catalogo'` | `#estadoCatalogo` | Al hacer "Ver todos" o buscar directo |
+| `'detalle'` | `#detailPanel` | Al hacer clic en un servicio |
+
+`estado.vistaAnterior` se guarda antes de entrar a `'detalle'` para poder volver correctamente con el botón "← Volver".
+
+## Generación del Word
+
+`descargarNotaWord()` en `index.html`:
+
+1. Toma la plantilla base64 de `TEMPLATES['default']` (definido en `asot-templates.js`)
+2. La descomprime con PizZip y edita `word/document.xml`
+3. Reemplaza los placeholders `{clave}` ordenando las claves por longitud descendente (evita sustituciones parciales)
+4. El campo `{solicitud}` convierte `\n` a saltos de línea Word (`<w:br/>`)
+5. Genera un blob `.docx` y lo descarga via `<a download>`
+
+El bloque del firmante (jerarquía, nombre, L.P., dependencia, FIRMA) se deja como texto fijo: el usuario lo completa manualmente en Word después de descargar.
 
 ## Cómo agregar un nuevo servicio
 
