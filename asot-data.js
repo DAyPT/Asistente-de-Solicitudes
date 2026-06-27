@@ -11,7 +11,8 @@ window.ASOT_DATA = {
             usuario_redsocial: ['Perfil de usuario', 'Historial de accesos IP', 'Contenido público/privado', 'Mensajes directos', 'Lista de amigos'],
             vehiculo: ['Registración del vehículo', 'Datos de viaje/trayecto', 'Métodos de pago del conductor'],
             wallet_cripto: ['Datos de cuenta cripto (KYC)', 'Operaciones cripto'],
-            dominio: ['Titularidad de dominio', 'Logs de acceso al panel del dominio']
+            dominio: ['Titularidad de dominio', 'Logs de acceso al panel del dominio'],
+            imagen_video: ['Reconocimiento facial por imagen']
         },
     informacionAServicios: {
             'Registro de Llamadas': ['movistar', 'personal', 'claro', 'tuenti', 'telecom'],
@@ -30,7 +31,8 @@ window.ASOT_DATA = {
             'Datos de cuenta cripto (KYC)': ['binance', 'coinbase', 'bitfinex', 'tether', 'kraken', 'huobi', 'okx', 'cryptocom', 'bitstamp', 'bitpanda', 'fixedfloat', 'bitso'],
             'Operaciones cripto': ['binance', 'coinbase', 'bitfinex', 'tether', 'kraken', 'huobi', 'okx', 'cryptocom', 'bitstamp', 'bitpanda', 'fixedfloat', 'bitso'],
             'Titularidad de dominio': ['nic', 'cloudflare', 'namecheap'],
-            'Logs de acceso al panel del dominio': ['cloudflare', 'namecheap']
+            'Logs de acceso al panel del dominio': ['cloudflare', 'namecheap'],
+            'Reconocimiento facial por imagen': ['pfa_individualizacion', 'div_ciberpatrullaje', 'renaper', 'div_antroposcopometrica']
         },
     servicios: {
             // === TELECOMUNICACIONES ===
@@ -153,7 +155,13 @@ window.ASOT_DATA = {
             garmin: {id: 'garmin', dominio: 'garmin.com', nombre: 'Garmin', categoria: 'plataformas', queInformacion: ['Datos de cuenta y dispositivo', 'Geolocalización', 'Historial de actividad'], requisitosLegales: ['Oficio firmado por Juez', 'Recomendado en inglés', 'Email institucional'], procedimiento: 'Enviar oficio PDF por email.', tiempoRespuesta: 'Variable', contactos: [{nombre: 'Solicitud de Emergencia', email: 'legalemergencyrequest@garmin.com', telefono: ''}], notas: 'Correo válido para solicitudes de emergencia.'},
 
             // === TRANSPORTE (cont.) ===
-            pedidosya: {id: 'pedidosya', dominio: 'pedidosya.com', nombre: 'PedidosYa', categoria: 'transporte', queInformacion: ['Datos del usuario', 'Historial de pedidos', 'Direcciones de entrega', 'Métodos de pago vinculados'], requisitosLegales: ['Oficio firmado digitalmente', 'Email institucional'], procedimiento: 'Enviar oficio PDF por email.', tiempoRespuesta: 'Variable', contactos: [{nombre: 'Contacto', email: 'contacto@pedidosya.com', telefono: ''}], notas: ''}
+            pedidosya: {id: 'pedidosya', dominio: 'pedidosya.com', nombre: 'PedidosYa', categoria: 'transporte', queInformacion: ['Datos del usuario', 'Historial de pedidos', 'Direcciones de entrega', 'Métodos de pago vinculados'], requisitosLegales: ['Oficio firmado digitalmente', 'Email institucional'], procedimiento: 'Enviar oficio PDF por email.', tiempoRespuesta: 'Variable', contactos: [{nombre: 'Contacto', email: 'contacto@pedidosya.com', telefono: ''}], notas: ''},
+
+            // === IDENTIFICACIÓN CRIMINAL ===
+            pfa_individualizacion: {id: 'pfa_individualizacion', dominio: 'policiafederal.gov.ar', nombre: 'Div. Individualización Criminal (PFA)', categoria: 'identificacion', queInformacion: ['Identificación por reconocimiento facial y biometría', 'Análisis de imagen/video original (crudo)'], requisitosLegales: ['Oficio Judicial (obligatorio)', 'Imagen o video ORIGINAL (crudo, sin editar)'], procedimiento: 'Enviar oficio judicial por email adjuntando la imagen o video original (crudo, sin editar).', tiempoRespuesta: 'No especificado', contactos: [{nombre: 'Individualización Criminal', email: 'individualizacioncriminal@policiafederal.gov.ar', telefono: ''}], notas: 'SIEMPRE solicitar imagen y video ORIGINAL (crudo, sin editar). Utilizan técnicas científicas de biometría y reconocimiento facial.'},
+            div_ciberpatrullaje: {id: 'div_ciberpatrullaje', dominio: 'policiadelaciudad.gob.ar', nombre: 'División Ciberpatrullaje (PCBA)', categoria: 'identificacion', queInformacion: ['Identificación facial mediante sistema Clearview'], requisitosLegales: ['Oficio Judicial'], procedimiento: 'Enviar oficio por email adjuntando la imagen. La imagen debe ser lo más nítida posible.', tiempoRespuesta: 'No especificado', contactos: [{nombre: 'Div. Ciberpatrullaje', email: 'divisionciberpatrullaje@gmail.com', telefono: ''}], notas: 'Utilizan el sistema CLEARVIEW. La imagen debe ser lo más nítida posible.'},
+            renaper: {id: 'renaper', dominio: 'renaper.gob.ar', nombre: 'RENAPER', categoria: 'identificacion', queInformacion: ['Identificación por imagen mediante base de datos RENAPER', 'Datos filiatorios completos del identificado', 'Datos de familiares registrados (ascendentes y descendentes)', 'Número de trámite y cantidad de ejemplares realizados', 'Plana digital biométrica (JPEG, 500 DPI, escala 1:1)'], requisitosLegales: ['Oficio Judicial'], procedimiento: 'Enviar oficio por email adjuntando la imagen. La imagen debe ser lo más nítida posible.', tiempoRespuesta: 'No especificado', contactos: [{nombre: 'Área Dactiloscopía', email: 'area.dactiloscopia@renaper.gob.ar', telefono: ''}], notas: 'En caso de resultado POSITIVO solicitar: 1) Cantidad de ejemplares y número de trámite, 2) Datos de familiares registrados (ascendentes y descendentes), 3) Cualquier otro dato de sus registros, 4) Datos filiatorios del buscado + plana digital biométrica escaneada a escala 1:1 en formato JPEG, 500 DPI (para cotejo con cuerpos sin identificar).'},
+            div_antroposcopometrica: {id: 'div_antroposcopometrica', dominio: '', nombre: 'Div. Reconocimiento Antroposcopométrico', categoria: 'identificacion', queInformacion: ['Identificación facial mediante sistema FACE EXPERT'], requisitosLegales: ['Oficio Judicial'], procedimiento: 'Enviar oficio por email o contactar telefónicamente. La imagen debe ser lo más nítida posible.', tiempoRespuesta: 'No especificado', contactos: [{nombre: 'Reconocimiento Antroposcopométrico', email: 'rantroposcopometrico@gmail.com', telefono: '4309-9700 interno 234063'}], notas: 'Utilizan el sistema FACE EXPERT. La imagen debe ser lo más nítida posible.'}
         },
     datosDisponibles: [
         { id: 'telefono',          label: 'Número de teléfono',           emoji: '☎️' },
@@ -163,7 +171,8 @@ window.ASOT_DATA = {
         { id: 'usuario_redsocial', label: 'Usuario red social / Nickname', emoji: '📱' },
         { id: 'vehiculo',          label: 'Patente vehículo',             emoji: '🚗' },
         { id: 'wallet_cripto',     label: 'Wallet / Dirección cripto',    emoji: '🪙' },
-        { id: 'dominio',           label: 'Dominio web',                  emoji: '🔗' }
+        { id: 'dominio',           label: 'Dominio web',                  emoji: '🔗' },
+        { id: 'imagen_video',      label: 'Imagen / Video',               emoji: '📷' }
     ],
     categorias: [
         { id: 'telecomunicaciones', label: 'Telecomunicaciones',  labelCorto: 'Telecom',     emoji: '📞' },
@@ -173,7 +182,8 @@ window.ASOT_DATA = {
         { id: 'financiero',         label: 'Financiero y Bancos', labelCorto: 'Financiero',  emoji: '🏦' },
         { id: 'medios_pago',        label: 'Medios de Pago',      labelCorto: 'Medios pago', emoji: '💳' },
         { id: 'cripto',             label: 'Criptomonedas',       labelCorto: 'Cripto',      emoji: '🪙' },
-        { id: 'registros',          label: 'Registros',           labelCorto: 'Registro',    emoji: '📋' }
+        { id: 'registros',          label: 'Registros',           labelCorto: 'Registro',    emoji: '📋' },
+        { id: 'identificacion',    label: 'Identificación Criminal', labelCorto: 'Identificación', emoji: '🪪' }
     ]
 };
 
